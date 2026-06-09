@@ -3,20 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Evolução de Enfermagem</title>
+<title>Evolução de Enfermagem UTI</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #0f1117;
-    --surface: #181c27;
-    --surface2: #1e2335;
-    --border: #2a3050;
-    --accent: #4f8ef7;
-    --accent2: #7c5cfc;
-    --text: #e8eaf6;
-    --muted: #7b82a0;
-    --success: #3ecf8e;
-    --danger: #f76f6f;
+    --bg: #0f1117; --surface: #181c27; --surface2: #1e2335; --border: #2a3050;
+    --accent: #4f8ef7; --accent2: #7c5cfc; --text: #e8eaf6; --muted: #7b82a0;
+    --success: #3ecf8e; --danger: #f76f6f;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; min-height: 100vh; }
@@ -43,38 +36,25 @@
     transition: all .2s; font-family: 'DM Sans', sans-serif;
   }
   .hdr-btn:hover { border-color: var(--accent); color: var(--accent); }
-  main { flex: 1; display: flex; overflow: hidden; }
-  #sidebar {
-    width: 260px; background: var(--surface); border-right: 1px solid var(--border);
-    padding: 24px 0; overflow-y: auto; flex-shrink: 0;
+  main { flex: 1; overflow-y: auto; }
+  #content { max-width: 820px; margin: 0 auto; padding: 40px 32px 60px; }
+  .section-card {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 14px;
+    padding: 28px 28px 24px; margin-bottom: 20px;
   }
-  .sidebar-label {
-    font-size: 0.68rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase;
-    color: var(--muted); padding: 0 20px 8px; display: block;
+  .section-header { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+  .section-num {
+    width: 28px; height: 28px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.72rem; font-weight: 700; color: #fff; flex-shrink: 0;
   }
-  .step-btn {
-    width: 100%; text-align: left; background: none; border: none; color: var(--muted);
-    padding: 9px 20px; cursor: pointer; font-size: 0.85rem; font-family: 'DM Sans', sans-serif;
-    display: flex; align-items: center; gap: 10px; transition: all .15s;
-    border-left: 3px solid transparent;
-  }
-  .step-btn:hover { color: var(--text); background: var(--surface2); }
-  .step-btn.active { color: var(--accent); border-left-color: var(--accent); background: rgba(79,142,247,.07); }
-  .step-btn .num {
-    width: 22px; height: 22px; border-radius: 50%; background: var(--surface2);
-    border: 1px solid var(--border); display: flex; align-items: center; justify-content: center;
-    font-size: 0.7rem; font-weight: 600; flex-shrink: 0;
-  }
-  .step-btn.active .num { background: var(--accent); border-color: var(--accent); color: #fff; }
-  #content { flex: 1; padding: 36px 40px; overflow-y: auto; max-width: 780px; }
-  .step-view { display: none; }
-  .step-view.visible { display: block; animation: fadein .25s ease; }
-  @keyframes fadein { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:none; } }
-  .step-title { font-family: 'DM Serif Display', serif; font-size: 1.6rem; margin-bottom: 6px; }
-  .step-subtitle { color: var(--muted); font-size: 0.88rem; margin-bottom: 28px; }
-  .field-group { margin-bottom: 22px; }
+  .section-title { font-family: 'DM Serif Display', serif; font-size: 1.15rem; }
+  .section-subtitle { color: var(--muted); font-size: 0.82rem; margin-left: auto; }
+  .field-group { margin-bottom: 18px; }
+  .field-group:last-child { margin-bottom: 0; }
   label { display: block; font-size: 0.82rem; font-weight: 500; color: var(--muted); margin-bottom: 7px; letter-spacing: .02em; }
-  input[type="text"], input[type="number"], textarea, select {
+  input[type="text"], input[type="number"], input[type="date"], textarea, select {
     width: 100%; background: var(--surface2); border: 1px solid var(--border); color: var(--text);
     border-radius: 10px; padding: 11px 14px; font-size: 0.9rem; font-family: 'DM Sans', sans-serif;
     outline: none; transition: border-color .2s;
@@ -92,7 +72,13 @@
   .chip.selected { border-color: var(--accent); background: rgba(79,142,247,.15); color: var(--accent); font-weight: 500; }
   .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
   .row3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
-  .nav-btns { display: flex; gap: 12px; margin-top: 32px; padding-top: 24px; border-top: 1px solid var(--border); }
+  .row4 { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 16px; }
+  .generate-bar {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 14px;
+    padding: 24px 28px; display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
+    margin-bottom: 20px;
+  }
+  .generate-bar-title { font-family: 'DM Serif Display', serif; font-size: 1.1rem; flex: 1; }
   .btn {
     padding: 11px 24px; border-radius: 10px; font-size: 0.88rem; font-weight: 600;
     cursor: pointer; transition: all .2s; font-family: 'DM Sans', sans-serif; border: none;
@@ -103,7 +89,7 @@
   .btn-secondary:hover { color: var(--text); border-color: var(--muted); }
   .btn-success { background: var(--success); color: #0f1117; }
   .btn-success:hover { opacity: .9; }
-  #result-panel { flex: 1; padding: 36px 40px; display: none; overflow-y: auto; }
+  #result-panel { display: none; padding: 40px 32px 60px; max-width: 820px; margin: 0 auto; }
   #result-panel.visible { display: block; animation: fadein .3s ease; }
   .result-title { font-family: 'DM Serif Display', serif; font-size: 1.5rem; margin-bottom: 20px; }
   #evolution-text {
@@ -112,7 +98,7 @@
     white-space: pre-wrap; min-height: 200px;
   }
   .result-actions { display: flex; gap: 12px; margin-top: 16px; flex-wrap: wrap; }
-  #history-panel { flex: 1; padding: 36px 40px; display: none; overflow-y: auto; }
+  #history-panel { display: none; padding: 40px 32px 60px; max-width: 820px; margin: 0 auto; }
   #history-panel.visible { display: block; animation: fadein .3s ease; }
   .history-title { font-family: 'DM Serif Display', serif; font-size: 1.5rem; margin-bottom: 20px; }
   .hist-card {
@@ -132,36 +118,24 @@
     font-family: 'DM Sans', sans-serif; transition: all .15s;
   }
   .hist-delete-btn:hover { background: var(--danger); color: #fff; }
-  .progress-bar-wrap { height: 3px; background: var(--surface2); }
-  .progress-bar-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--accent2)); transition: width .4s ease; }
-  .modal-overlay {
-    display: none; position: fixed; inset: 0; background: rgba(0,0,0,.7);
-    z-index: 200; align-items: center; justify-content: center;
-  }
+  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.7); z-index: 200; align-items: center; justify-content: center; }
   .modal-overlay.open { display: flex; }
-  .modal {
-    background: var(--surface); border: 1px solid var(--border); border-radius: 16px;
-    padding: 32px; width: 620px; max-width: 95vw; max-height: 80vh; overflow-y: auto;
-  }
+  .modal { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 32px; width: 620px; max-width: 95vw; max-height: 80vh; overflow-y: auto; }
   .modal h2 { font-family: 'DM Serif Display', serif; margin-bottom: 12px; }
   .modal .close-btn { float: right; background: none; border: none; color: var(--muted); font-size: 1.2rem; cursor: pointer; margin-top: -8px; }
-  #hv-text {
-    background: var(--surface2); border: 1px solid var(--border); border-radius: 10px;
-    padding: 18px; font-size: 0.88rem; line-height: 1.75; white-space: pre-wrap; color: var(--text);
-  }
+  #hv-text { background: var(--surface2); border: 1px solid var(--border); border-radius: 10px; padding: 18px; font-size: 0.88rem; line-height: 1.75; white-space: pre-wrap; color: var(--text); }
   #saved-indicator { font-size: 0.78rem; color: var(--success); display: none; align-items: center; gap: 6px; }
   #saved-indicator.show { display: flex; }
-  #toast {
-    position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
-    background: var(--surface); border: 1px solid var(--border); color: var(--text);
-    padding: 12px 24px; border-radius: 10px; font-size: 0.88rem; z-index: 300;
-    opacity: 0; transition: opacity .3s; pointer-events: none;
-  }
+  #toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); background: var(--surface); border: 1px solid var(--border); color: var(--text); padding: 12px 24px; border-radius: 10px; font-size: 0.88rem; z-index: 300; opacity: 0; transition: opacity .3s; pointer-events: none; }
   #toast.show { opacity: 1; }
+  @keyframes fadein { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:none; } }
+  #fab-top { position: fixed; bottom: 24px; right: 24px; width: 42px; height: 42px; border-radius: 50%; background: var(--surface2); border: 1px solid var(--border); color: var(--muted); font-size: 1.1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all .2s; z-index: 90; }
+  #fab-top:hover { border-color: var(--accent); color: var(--accent); }
   @media (max-width: 700px) {
-    #sidebar { display: none; }
-    #content, #result-panel, #history-panel { padding: 24px 16px; }
-    .row2, .row3 { grid-template-columns: 1fr; }
+    #content, #result-panel, #history-panel { padding: 20px 14px 60px; }
+    .row2, .row3, .row4 { grid-template-columns: 1fr; }
+    .section-card { padding: 20px 16px; }
+    .section-subtitle { display: none; }
   }
 </style>
 </head>
@@ -169,263 +143,477 @@
 <div id="app">
   <header>
     <h1>Evolução de Enfermagem</h1>
-    <span class="badge">SAE</span>
+    <span class="badge">UTI · Por Sistemas</span>
     <div class="spacer"></div>
     <span id="saved-indicator">✓ Salvo</span>
     <button class="hdr-btn" onclick="showHistory()">📋 Histórico</button>
   </header>
-  <div class="progress-bar-wrap"><div class="progress-bar-fill" id="progress-fill" style="width:0%"></div></div>
-  <main>
-    <nav id="sidebar">
-      <span class="sidebar-label">Etapas</span>
-      <button class="step-btn active" onclick="goTo(0)" id="sb-0"><span class="num">1</span>Identificação</button>
-      <button class="step-btn" onclick="goTo(1)" id="sb-1"><span class="num">2</span>Estado Geral</button>
-      <button class="step-btn" onclick="goTo(2)" id="sb-2"><span class="num">3</span>Consciência e Orientação</button>
-      <button class="step-btn" onclick="goTo(3)" id="sb-3"><span class="num">4</span>Emocional e Higiene</button>
-      <button class="step-btn" onclick="goTo(4)" id="sb-4"><span class="num">5</span>Mobilidade e Nutrição</button>
-      <button class="step-btn" onclick="goTo(5)" id="sb-5"><span class="num">6</span>Parâmetros Vitais</button>
-      <button class="step-btn" onclick="goTo(6)" id="sb-6"><span class="num">7</span>Pele e Acessos</button>
-      <button class="step-btn" onclick="goTo(7)" id="sb-7"><span class="num">8</span>Hidratação e Perfusão</button>
-      <button class="step-btn" onclick="goTo(8)" id="sb-8"><span class="num">9</span>Eliminações</button>
-      <button class="step-btn" onclick="goTo(9)" id="sb-9"><span class="num">10</span>Queixas e Dor</button>
-      <button class="step-btn" onclick="goTo(10)" id="sb-10"><span class="num">11</span>Procedimentos</button>
-      <button class="step-btn" onclick="goTo(11)" id="sb-11"><span class="num">12</span>Revisão e Gerar</button>
-    </nav>
 
+  <main id="main-scroll">
     <div id="content">
-      <!-- STEP 0 -->
-      <div class="step-view visible" id="step-0">
-        <div class="step-title">Identificação do Paciente</div>
-        <div class="step-subtitle">Dados básicos para o cabeçalho da evolução.</div>
-        <div class="row2">
-          <div class="field-group"><label>Iniciais do paciente</label><input type="text" id="iniciais" placeholder="Ex: M.B.C" maxlength="10"></div>
-          <div class="field-group"><label>Idade</label><input type="number" id="idade" placeholder="Ex: 45" min="0" max="130"></div>
+
+      <!-- 1. CABEÇALHO -->
+      <div class="section-card">
+        <div class="section-header">
+          <div class="section-num">1</div>
+          <div class="section-title">Identificação / Cabeçalho</div>
+          <div class="section-subtitle">Dados do paciente</div>
         </div>
         <div class="row2">
-          <div class="field-group"><label>Sexo</label><select id="sexo"><option value="">Selecione</option><option>Feminino</option><option>Masculino</option></select></div>
-          <div class="field-group"><label>Dia de Internação (DIH)</label><input type="number" id="dih" placeholder="Ex: 3" min="1"></div>
+          <div class="field-group"><label>Setor</label><input type="text" id="setor" placeholder="Ex: UTI Adulto, CTI, Semi-intensiva..."></div>
+          <div class="field-group"><label>Leito</label><input type="text" id="leito" placeholder="Ex: Leito 05"></div>
         </div>
-        <div class="field-group"><label>Hipótese / Diagnóstico (HD)</label><input type="text" id="diagnostico" placeholder="Ex: Pneumonia, Colelitíase, IAM..."></div>
-        <div class="nav-btns"><button class="btn btn-primary" onclick="goTo(1)">Próximo →</button></div>
+        <div class="row2">
+          <div class="field-group"><label>Nome do paciente</label><input type="text" id="nome" placeholder="Ex: João da Silva"></div>
+          <div class="field-group"><label>Idade</label><input type="number" id="idade" placeholder="Ex: 67" min="0" max="130"></div>
+        </div>
+        <div class="row2">
+          <div class="field-group"><label>Data de internação</label><input type="date" id="dih"></div>
+          <div class="field-group"><label>Dia de Internação Hospitalar (DIH)</label><input type="number" id="dih-num" placeholder="Ex: 5" min="1"></div>
+        </div>
+        <div class="field-group"><label>Diagnóstico / Hipótese diagnóstica — internado por:</label><input type="text" id="diagnostico" placeholder="Ex: Sepse de foco pulmonar, AVC isquêmico, PCR revertida..."></div>
+        <div class="field-group"><label>Histórico de doenças anteriores / comorbidades</label><textarea id="historico" placeholder="Ex: HAS, DM2, ICC, DPOC, IRC..." style="min-height:60px"></textarea></div>
       </div>
 
-      <!-- STEP 1 -->
-      <div class="step-view" id="step-1">
-        <div class="step-title">Estado Geral</div>
-        <div class="step-subtitle">Como o paciente está evoluindo clinicamente.</div>
-        <div class="field-group"><label>Estado geral</label>
-          <div class="chip-group" id="estado-geral">
-            <span class="chip" data-val="bem">Bem</span><span class="chip" data-val="melhorando">Melhorando</span><span class="chip" data-val="estável">Estável</span><span class="chip" data-val="sem melhora">Sem melhora</span><span class="chip" data-val="instável">Instável</span><span class="chip" data-val="piorado">Piorado</span><span class="chip" data-val="inspira cuidados">Inspira cuidados</span><span class="chip" data-val="grave">Grave</span><span class="chip" data-val="gravíssimo">Gravíssimo</span>
-          </div>
+      <!-- 2. NEUROLÓGICO -->
+      <div class="section-card">
+        <div class="section-header">
+          <div class="section-num">2</div>
+          <div class="section-title">Neurológico</div>
+          <div class="section-subtitle">Consciência · Sedação · Glasgow · HAS</div>
         </div>
-        <div class="field-group" style="margin-top:20px"><label>Observações adicionais</label><textarea id="estado-obs" placeholder="Observações específicas..."></textarea></div>
-        <div class="nav-btns"><button class="btn btn-secondary" onclick="goTo(0)">← Voltar</button><button class="btn btn-primary" onclick="goTo(2)">Próximo →</button></div>
-      </div>
-
-      <!-- STEP 2 -->
-      <div class="step-view" id="step-2">
-        <div class="step-title">Consciência e Orientação</div>
-        <div class="step-subtitle">Nível de consciência e orientação do paciente.</div>
-        <div class="field-group"><label>Nível de consciência</label>
+        <div class="field-group"><label>Estado de consciência</label>
           <div class="chip-group" id="consciencia">
-            <span class="chip" data-val="lúcido e consciente">Lúcido e consciente</span><span class="chip" data-val="consciente">Consciente</span><span class="chip" data-val="torporoso">Torporoso</span><span class="chip" data-val="letárgico">Letárgico</span><span class="chip" data-val="inconsciente">Inconsciente</span><span class="chip" data-val="comatoso">Comatoso</span>
+            <span class="chip" data-val="lúcido e consciente">Lúcido e consciente</span>
+            <span class="chip" data-val="torporoso">Torporoso</span>
+            <span class="chip" data-val="letárgico">Letárgico</span>
+            <span class="chip" data-val="obnubilado">Obnubilado</span>
+            <span class="chip" data-val="inconsciente">Inconsciente</span>
+            <span class="chip" data-val="comatoso">Comatoso</span>
+            <span class="chip" data-val="em sedoanalgesia">Em sedoanalgesia</span>
           </div>
         </div>
-        <div class="field-group" style="margin-top:20px"><label>Glasgow (opcional)</label><input type="number" id="glasgow" placeholder="Ex: 15" min="3" max="15"></div>
-        <div class="field-group" style="margin-top:20px"><label>Orientação</label>
+        <div class="field-group"><label>Orientação</label>
           <div class="chip-group" id="orientacao">
-            <span class="chip" data-val="orientado no tempo e espaço">Orientado (T e E)</span><span class="chip" data-val="parcialmente orientado">Parcialmente orientado</span><span class="chip" data-val="totalmente desorientado">Totalmente desorientado</span><span class="chip" data-val="com memória preservada">Memória preservada</span><span class="chip" data-val="com alteração de memória recente">Alteração memória recente</span>
+            <span class="chip" data-val="orientado no tempo e espaço">Orientado T e E</span>
+            <span class="chip" data-val="parcialmente orientado">Parcialmente orientado</span>
+            <span class="chip" data-val="desorientado">Desorientado</span>
           </div>
         </div>
-        <div class="nav-btns"><button class="btn btn-secondary" onclick="goTo(1)">← Voltar</button><button class="btn btn-primary" onclick="goTo(3)">Próximo →</button></div>
+        <div class="field-group"><label>Drogas de sedoanalgesia em uso</label><input type="text" id="sedoanalgesia" placeholder="Ex: Midazolam 5mg/h + Fentanil 50mcg/h, Propofol 20mg/h..."></div>
+        <div class="row2">
+          <div class="field-group"><label>Escala de Glasgow (ECGl)</label><input type="number" id="glasgow" placeholder="3–15" min="3" max="15"></div>
+          <div class="field-group"><label>RASS (se em sedação)</label>
+            <select id="rass">
+              <option value="">Selecione</option>
+              <option>RASS 0 — Alerta e calmo</option>
+              <option>RASS -1 — Sonolento</option>
+              <option>RASS -2 — Sedação leve</option>
+              <option>RASS -3 — Sedação moderada</option>
+              <option>RASS -4 — Sedação profunda</option>
+              <option>RASS -5 — Não responsivo</option>
+              <option>RASS +1 — Inquieto</option>
+              <option>RASS +2 — Agitado</option>
+              <option>RASS +3 — Muito agitado</option>
+              <option>RASS +4 — Combativo</option>
+            </select>
+          </div>
+        </div>
+        <div class="field-group"><label>Escala de HAS (se comatoso)</label>
+          <div class="chip-group" id="has">
+            <span class="chip" data-val="HAS 1 — flexão normal">HAS 1</span>
+            <span class="chip" data-val="HAS 2 — flexão anormal">HAS 2</span>
+            <span class="chip" data-val="HAS 3 — extensão">HAS 3</span>
+            <span class="chip" data-val="HAS 4 — sem resposta motora">HAS 4</span>
+          </div>
+        </div>
+        <div class="field-group"><label>Obs. neurológicas</label><textarea id="neuro-obs" placeholder="Pupilas, reflexos, convulsões, déficit focal..." style="min-height:60px"></textarea></div>
       </div>
 
-      <!-- STEP 3 -->
-      <div class="step-view" id="step-3">
-        <div class="step-title">Estado Emocional e Higiene</div>
-        <div class="step-subtitle">Humor e condições de higiene.</div>
-        <div class="field-group"><label>Estado emocional</label>
-          <div class="chip-group" id="emocional">
-            <span class="chip" data-val="calmo">Calmo</span><span class="chip" data-val="alegre">Alegre</span><span class="chip" data-val="bem-humorado">Bem-humorado</span><span class="chip" data-val="triste">Triste</span><span class="chip" data-val="ansioso">Ansioso</span><span class="chip" data-val="agressivo">Agressivo</span><span class="chip" data-val="depressivo">Depressivo</span><span class="chip" data-val="choroso">Choroso</span><span class="chip" data-val="indiferente">Indiferente</span>
+      <!-- 3. CARDIOVASCULAR -->
+      <div class="section-card">
+        <div class="section-header">
+          <div class="section-num">3</div>
+          <div class="section-title">Cardiovascular</div>
+          <div class="section-subtitle">Hemodinâmica · FC · PA · Perfusão · DVA</div>
+        </div>
+        <div class="field-group"><label>Estado hemodinâmico</label>
+          <div class="chip-group" id="hemodinamico">
+            <span class="chip" data-val="hemodinamicamente estável">Estável</span>
+            <span class="chip" data-val="hemodinamicamente instável">Instável</span>
+            <span class="chip" data-val="em choque séptico">Choque séptico</span>
+            <span class="chip" data-val="em choque cardiogênico">Choque cardiogênico</span>
+            <span class="chip" data-val="em choque hipovolêmico">Choque hipovolêmico</span>
+            <span class="chip" data-val="em choque distributivo">Choque distributivo</span>
           </div>
         </div>
-        <div class="field-group" style="margin-top:20px"><label>Higiene</label>
-          <div class="chip-group" id="higiene">
-            <span class="chip" data-val="higienizado">Higienizado</span><span class="chip" data-val="auto-higienizado">Auto-higienizado</span><span class="chip" data-val="higienizado por aspersão">Por aspersão</span><span class="chip" data-val="higienizado no leito">No leito</span><span class="chip" data-val="desigienizado">Desigienizado</span><span class="chip" data-val="com sujidades">Com sujidades</span>
-          </div>
-        </div>
-        <div class="nav-btns"><button class="btn btn-secondary" onclick="goTo(2)">← Voltar</button><button class="btn btn-primary" onclick="goTo(4)">Próximo →</button></div>
-      </div>
-
-      <!-- STEP 4 -->
-      <div class="step-view" id="step-4">
-        <div class="step-title">Mobilidade e Nutrição</div>
-        <div class="step-subtitle">Deambulação, nutrição, dieta e sono.</div>
-        <div class="field-group"><label>Deambulação</label>
-          <div class="chip-group" id="deambulacao">
-            <span class="chip" data-val="deambulando sem auxílio">Sem auxílio</span><span class="chip" data-val="deambulando com auxílio">Com auxílio</span><span class="chip" data-val="sem deambular">Sem deambular</span><span class="chip" data-val="restrito ao leito">Restrito ao leito</span><span class="chip" data-val="acamado">Acamado</span><span class="chip" data-val="hiperativo">Hiperativo</span><span class="chip" data-val="hipoativo">Hipoativo</span>
-          </div>
-        </div>
-        <div class="field-group" style="margin-top:20px"><label>Estado nutricional</label>
-          <div class="chip-group" id="nutricao">
-            <span class="chip" data-val="nutrido">Nutrido</span><span class="chip" data-val="desnutrido">Desnutrido</span><span class="chip" data-val="subnutrido">Subnutrido</span><span class="chip" data-val="emagrecido">Emagrecido</span><span class="chip" data-val="caquético">Caquético</span><span class="chip" data-val="obeso">Obeso</span>
-          </div>
-        </div>
-        <div class="field-group" style="margin-top:20px"><label>Dieta</label>
-          <div class="chip-group" id="dieta">
-            <span class="chip" data-val="aceita bem a dieta">Aceita bem</span><span class="chip" data-val="aceita parcialmente a dieta">Aceita parcialmente</span><span class="chip" data-val="rejeita a dieta">Rejeita</span><span class="chip" data-val="anorético">Anorético</span><span class="chip" data-val="em jejum">Em jejum</span><span class="chip" data-val="em uso de SNE/SNG">SNE/SNG</span><span class="chip" data-val="em uso de gastrostomia">Gastrostomia</span>
-          </div>
-        </div>
-        <div class="field-group" style="margin-top:20px"><label>Sono e repouso</label>
-          <div class="chip-group" id="sono">
-            <span class="chip" data-val="sono tranquilo">Tranquilo</span><span class="chip" data-val="sono agitado">Agitado</span><span class="chip" data-val="com insônia">Insônia</span><span class="chip" data-val="não concilia bem o sono">Não concilia</span>
-          </div>
-        </div>
-        <div class="nav-btns"><button class="btn btn-secondary" onclick="goTo(3)">← Voltar</button><button class="btn btn-primary" onclick="goTo(5)">Próximo →</button></div>
-      </div>
-
-      <!-- STEP 5 -->
-      <div class="step-view" id="step-5">
-        <div class="step-title">Parâmetros Vitais</div>
-        <div class="step-subtitle">Sinais vitais aferidos no período.</div>
         <div class="row3">
-          <div class="field-group"><label>FC (bpm)</label><input type="number" id="fc" placeholder="Ex: 75"></div>
-          <div class="field-group"><label>FR (irpm)</label><input type="number" id="fr" placeholder="Ex: 17"></div>
-          <div class="field-group"><label>Temp. (°C)</label><input type="text" id="temp" placeholder="Ex: 36.5"></div>
+          <div class="field-group"><label>FC (bpm)</label><input type="number" id="fc" placeholder="Ex: 88"></div>
+          <div class="field-group"><label>PA (mmHg)</label><input type="text" id="pa" placeholder="Ex: 110x70"></div>
+          <div class="field-group"><label>PAM (mmHg)</label><input type="number" id="pam" placeholder="Ex: 83"></div>
+        </div>
+        <div class="field-group"><label>Ritmo cardíaco</label>
+          <div class="chip-group" id="ritmo">
+            <span class="chip" data-val="ritmo sinusal">Sinusal</span>
+            <span class="chip" data-val="taquicárdico">Taquicárdico</span>
+            <span class="chip" data-val="bradicárdico">Bradicárdico</span>
+            <span class="chip" data-val="em fibrilação atrial">FA</span>
+            <span class="chip" data-val="em flutter atrial">Flutter</span>
+            <span class="chip" data-val="com marcapasso">Marcapasso</span>
+            <span class="chip" data-val="em monitorização cardíaca contínua">Monitorização contínua</span>
+          </div>
+        </div>
+        <div class="field-group"><label>Perfusão periférica</label>
+          <div class="chip-group" id="perfusao">
+            <span class="chip" data-val="extremidades bem perfundidas">Bem perfundidas</span>
+            <span class="chip" data-val="extremidades mal perfundidas">Mal perfundidas</span>
+            <span class="chip" data-val="TEC normal (menor 2s)">TEC normal</span>
+            <span class="chip" data-val="TEC aumentado">TEC aumentado</span>
+            <span class="chip" data-val="extremidades frias e cianóticas">Extremidades frias/cianóticas</span>
+          </div>
+        </div>
+        <div class="field-group"><label>Drogas vasoativas (DVA) em uso</label><input type="text" id="dva" placeholder="Ex: Noradrenalina 0,3mcg/kg/min, Dobutamina 5mcg/kg/min, Vasopressina 0,03 UI/min..."></div>
+        <div class="field-group"><label>Obs. cardiovasculares</label><textarea id="cardio-obs" placeholder="Edemas, ausculta cardíaca, PVC, linha arterial..." style="min-height:60px"></textarea></div>
+      </div>
+
+      <!-- 4. RESPIRATÓRIO -->
+      <div class="section-card">
+        <div class="section-header">
+          <div class="section-num">4</div>
+          <div class="section-title">Respiratório</div>
+          <div class="section-subtitle">VM · Modo · Parâmetros · SpO2</div>
+        </div>
+        <div class="field-group"><label>Modo de respiração</label>
+          <div class="chip-group" id="modo-resp">
+            <span class="chip" data-val="em ventilação mecânica invasiva (VMI)">VMI</span>
+            <span class="chip" data-val="em ventilação não invasiva (VNI)">VNI</span>
+            <span class="chip" data-val="em cateter nasal de O2">Cateter nasal O2</span>
+            <span class="chip" data-val="em máscara de Venturi">Máscara Venturi</span>
+            <span class="chip" data-val="em alto fluxo (HFNC)">Alto fluxo (HFNC)</span>
+            <span class="chip" data-val="em ar ambiente">Ar ambiente</span>
+            <span class="chip" data-val="em desmame ventilatório">Desmame ventilatório</span>
+          </div>
+        </div>
+        <div class="field-group"><label>Modo ventilatório (se em VM)</label>
+          <div class="chip-group" id="modo-vm">
+            <span class="chip" data-val="VCV">VCV</span>
+            <span class="chip" data-val="PCV">PCV</span>
+            <span class="chip" data-val="PSV">PSV</span>
+            <span class="chip" data-val="SIMV">SIMV</span>
+            <span class="chip" data-val="PRVC">PRVC</span>
+            <span class="chip" data-val="APRV">APRV</span>
+          </div>
+        </div>
+        <div class="row4">
+          <div class="field-group"><label>Volume corrente (mL)</label><input type="number" id="vc" placeholder="Ex: 450"></div>
+          <div class="field-group"><label>FiO2 (%)</label><input type="number" id="fio2" placeholder="Ex: 40" min="21" max="100"></div>
+          <div class="field-group"><label>PEEP (cmH2O)</label><input type="number" id="peep" placeholder="Ex: 5"></div>
+          <div class="field-group"><label>FR (irpm)</label><input type="number" id="fr" placeholder="Ex: 14"></div>
         </div>
         <div class="row2">
-          <div class="field-group"><label>PA (mmHg)</label><input type="text" id="pa" placeholder="Ex: 120x80"></div>
-          <div class="field-group"><label>SpO2 (%)</label><input type="number" id="spo2" placeholder="Ex: 98"></div>
+          <div class="field-group"><label>SpO2 (%)</label><input type="number" id="spo2" placeholder="Ex: 97" min="0" max="100"></div>
+          <div class="field-group"><label>Pressão de suporte — PS (cmH2O)</label><input type="number" id="ps" placeholder="Ex: 12"></div>
         </div>
-        <div class="field-group"><label>Suporte / dispositivos</label>
-          <div class="chip-group" id="vitais-extra">
-            <span class="chip" data-val="em uso de O2 suplementar">O2 suplementar</span><span class="chip" data-val="em ventilação mecânica invasiva">VM invasiva</span><span class="chip" data-val="em VNI">VNI</span><span class="chip" data-val="em monitorização cardíaca contínua">Monitorização contínua</span>
-          </div>
-        </div>
-        <div class="nav-btns"><button class="btn btn-secondary" onclick="goTo(4)">← Voltar</button><button class="btn btn-primary" onclick="goTo(6)">Próximo →</button></div>
-      </div>
-
-      <!-- STEP 6 -->
-      <div class="step-view" id="step-6">
-        <div class="step-title">Pele, Mucosas e Acessos</div>
-        <div class="step-subtitle">Integridade cutânea e dispositivos de infusão.</div>
-        <div class="field-group"><label>Pele e mucosas</label>
-          <div class="chip-group" id="pele">
-            <span class="chip" data-val="pele íntegra">Íntegra</span><span class="chip" data-val="corada">Corada</span><span class="chip" data-val="normocorada">Normocorada</span><span class="chip" data-val="hipocorada">Hipocorada</span><span class="chip" data-val="pálida">Pálida</span><span class="chip" data-val="ictérica">Ictérica</span><span class="chip" data-val="cianótica">Cianótica</span><span class="chip" data-val="acianótica">Acianótica</span><span class="chip" data-val="com lesões">Com lesões</span><span class="chip" data-val="com escara">Com escara</span><span class="chip" data-val="com equimoses">Com equimoses</span>
-          </div>
-        </div>
-        <div class="field-group" style="margin-top:20px"><label>Acesso venoso</label>
-          <div class="chip-group" id="acesso">
-            <span class="chip" data-val="em soroterapia com AVP pérvio">AVP pérvio</span><span class="chip" data-val="acesso venoso central pérvio">Acesso central</span><span class="chip" data-val="sem acesso venoso">Sem acesso</span><span class="chip" data-val="ausência de sinais flogísticos no acesso">Sem sinais flogísticos</span><span class="chip" data-val="com sinais flogísticos no acesso">Com sinais flogísticos</span>
-          </div>
-        </div>
-        <div class="field-group" style="margin-top:12px"><label>Localização do acesso</label><input type="text" id="acesso-local" placeholder="Ex: MSD, antebraço E, jugular D..."></div>
-        <div class="field-group" style="margin-top:12px"><label>Obs. pele / lesões</label><textarea id="pele-obs" placeholder="Descreva lesões, curativos, etc."></textarea></div>
-        <div class="nav-btns"><button class="btn btn-secondary" onclick="goTo(5)">← Voltar</button><button class="btn btn-primary" onclick="goTo(7)">Próximo →</button></div>
-      </div>
-
-      <!-- STEP 7 -->
-      <div class="step-view" id="step-7">
-        <div class="step-title">Hidratação e Perfusão</div>
-        <div class="step-subtitle">Estado hídrico e perfusão tissular.</div>
-        <div class="field-group"><label>Hidratação</label>
-          <div class="chip-group" id="hidratacao">
-            <span class="chip" data-val="hidratado">Hidratado</span><span class="chip" data-val="hiperidratado">Hiperidratado</span><span class="chip" data-val="desidratado">Desidratado</span><span class="chip" data-val="com edema em MMII">Edema MMII</span><span class="chip" data-val="com anasarca">Anasarca</span><span class="chip" data-val="com ascite">Ascite</span><span class="chip" data-val="com sinal de cacifo positivo">Cacifo +</span>
-          </div>
-        </div>
-        <div class="field-group" style="margin-top:20px"><label>Perfusão tissular</label>
-          <div class="chip-group" id="perfusao">
-            <span class="chip" data-val="extremidades bem perfundidas">Bem perfundido</span><span class="chip" data-val="extremidades mal perfundidas">Mal perfundido</span><span class="chip" data-val="sem perfusão periférica">Sem perfusão</span><span class="chip" data-val="TEC normal">TEC normal</span><span class="chip" data-val="TEC aumentado">TEC aumentado</span>
-          </div>
-        </div>
-        <div class="nav-btns"><button class="btn btn-secondary" onclick="goTo(6)">← Voltar</button><button class="btn btn-primary" onclick="goTo(8)">Próximo →</button></div>
-      </div>
-
-      <!-- STEP 8 -->
-      <div class="step-view" id="step-8">
-        <div class="step-title">Eliminações</div>
-        <div class="step-subtitle">Eliminações urinárias e intestinais.</div>
-        <div class="field-group"><label>Diurese</label>
-          <div class="chip-group" id="diurese">
-            <span class="chip" data-val="diurese presente">Presente</span><span class="chip" data-val="diurese preservada">Preservada</span><span class="chip" data-val="oligúria">Oligúria</span><span class="chip" data-val="anúria">Anúria</span><span class="chip" data-val="poliúria">Poliúria</span><span class="chip" data-val="disúria">Disúria</span><span class="chip" data-val="hematúria">Hematúria</span><span class="chip" data-val="incontinência urinária">Incontinência</span><span class="chip" data-val="em uso de SVD">SVD</span><span class="chip" data-val="cistostomia presente">Cistostomia</span>
-          </div>
-        </div>
-        <div class="field-group" style="margin-top:20px"><label>Evacuações</label>
-          <div class="chip-group" id="evacuacao">
-            <span class="chip" data-val="evacuações presentes">Presentes</span><span class="chip" data-val="evacuações ausentes no período">Ausentes no período</span><span class="chip" data-val="constipação">Constipação</span><span class="chip" data-val="diarreia">Diarreia</span><span class="chip" data-val="fezes de aspecto pastoso">Fezes pastosas</span><span class="chip" data-val="fezes de aspecto sólido">Fezes sólidas</span><span class="chip" data-val="melena">Melena</span><span class="chip" data-val="hematoquezia">Hematoquezia</span><span class="chip" data-val="colostomia presente">Colostomia</span><span class="chip" data-val="ileostomia presente">Ileostomia</span>
-          </div>
-        </div>
-        <div class="nav-btns"><button class="btn btn-secondary" onclick="goTo(7)">← Voltar</button><button class="btn btn-primary" onclick="goTo(9)">Próximo →</button></div>
-      </div>
-
-      <!-- STEP 9 -->
-      <div class="step-view" id="step-9">
-        <div class="step-title">Queixas e Alterações</div>
-        <div class="step-subtitle">Queixas referidas e ausculta.</div>
-        <div class="field-group"><label>Queixas</label>
-          <div class="chip-group" id="queixas">
-            <span class="chip" data-val="sem queixas">Sem queixas</span><span class="chip" data-val="refere dor">Dor</span><span class="chip" data-val="náuseas">Náuseas</span><span class="chip" data-val="êmese presente">Êmese</span><span class="chip" data-val="dispneia">Dispneia</span><span class="chip" data-val="cefaleia">Cefaleia</span><span class="chip" data-val="tontura/vertigem">Tontura/Vertigem</span><span class="chip" data-val="prurido">Prurido</span><span class="chip" data-val="pirose">Pirose</span><span class="chip" data-val="flatulência">Flatulência</span>
-          </div>
-        </div>
-        <div class="field-group" style="margin-top:20px"><label>Dor</label>
-          <div class="row2">
-            <div><label>Localização</label><input type="text" id="dor-local" placeholder="Ex: QSD, epigástrio..."></div>
-            <div><label>Escala 0–10</label><input type="number" id="dor-escala" placeholder="0–10" min="0" max="10"></div>
-          </div>
-        </div>
-        <div class="field-group" style="margin-top:20px"><label>Ausculta pulmonar</label>
+        <div class="field-group"><label>Ausculta pulmonar</label>
           <div class="chip-group" id="ausculta">
-            <span class="chip" data-val="ausência de estertores pulmonares">Sem estertores</span><span class="chip" data-val="estertores crepitantes">Crepitantes</span><span class="chip" data-val="estertores subcrepitantes">Subcrepitantes</span><span class="chip" data-val="sibilos">Sibilos</span><span class="chip" data-val="murmúrios vesiculares presentes bilateralmente">MV bilat.</span><span class="chip" data-val="murmúrios vesiculares diminuídos">MV diminuídos</span>
+            <span class="chip" data-val="murmúrios vesiculares presentes bilateralmente">MV+ bilateral</span>
+            <span class="chip" data-val="murmúrios vesiculares diminuídos">MV diminuídos</span>
+            <span class="chip" data-val="estertores crepitantes">Crepitantes</span>
+            <span class="chip" data-val="estertores subcrepitantes">Subcrepitantes</span>
+            <span class="chip" data-val="sibilos">Sibilos</span>
+            <span class="chip" data-val="roncos">Roncos</span>
           </div>
         </div>
-        <div class="field-group" style="margin-top:20px"><label>Ausculta abdominal</label>
-          <div class="chip-group" id="abd">
-            <span class="chip" data-val="ruídos hidroaéreos presentes em todos os quadrantes">RHA + todos</span><span class="chip" data-val="ruídos hidroaéreos diminuídos">RHA diminuídos</span><span class="chip" data-val="ruídos hidroaéreos ausentes">RHA ausentes</span><span class="chip" data-val="abdome distendido">Distendido</span>
+        <div class="field-group"><label>Obs. respiratórias</label><textarea id="resp-obs" placeholder="Secreção (cor, aspecto, volume), broncoscopia, traqueostomia, desmame..." style="min-height:60px"></textarea></div>
+      </div>
+
+      <!-- 5. GASTROINTESTINAL -->
+      <div class="section-card">
+        <div class="section-header">
+          <div class="section-num">5</div>
+          <div class="section-title">Gastrointestinal</div>
+          <div class="section-subtitle">Alimentação · Dieta · Abdome · Evacuações</div>
+        </div>
+        <div class="field-group"><label>Forma de alimentação</label>
+          <div class="chip-group" id="alimentacao">
+            <span class="chip" data-val="em dieta oral">Dieta oral</span>
+            <span class="chip" data-val="em dieta enteral por SNE">Dieta enteral SNE</span>
+            <span class="chip" data-val="em dieta enteral por SNG">Dieta enteral SNG</span>
+            <span class="chip" data-val="em dieta enteral por gastrostomia (GTT)">Gastrostomia (GTT)</span>
+            <span class="chip" data-val="em nutrição parenteral total (NPT)">NPT</span>
+            <span class="chip" data-val="em jejum">Jejum</span>
+            <span class="chip" data-val="em dieta zero">Dieta zero</span>
           </div>
         </div>
-        <div class="nav-btns"><button class="btn btn-secondary" onclick="goTo(8)">← Voltar</button><button class="btn btn-primary" onclick="goTo(10)">Próximo →</button></div>
-      </div>
-
-      <!-- STEP 10 -->
-      <div class="step-view" id="step-10">
-        <div class="step-title">Procedimentos e Encaminhamentos</div>
-        <div class="step-subtitle">O que foi realizado durante o período.</div>
-        <div class="field-group"><label>Procedimentos</label>
-          <div class="chip-group" id="procedimentos">
-            <span class="chip" data-val="higiene corporal realizada">Higiene corporal</span><span class="chip" data-val="preparo do leito realizado">Preparo do leito</span><span class="chip" data-val="mudança de decúbito realizada">Mudança decúbito</span><span class="chip" data-val="curativo realizado">Curativo</span><span class="chip" data-val="venóclise realizada">Venóclise</span><span class="chip" data-val="heparinização realizada">Heparinização</span><span class="chip" data-val="sondagem vesical realizada">Sondagem vesical</span><span class="chip" data-val="coleta de exames realizada">Coleta de exames</span><span class="chip" data-val="medicações administradas conforme prescrição">Medicações adm.</span><span class="chip" data-val="fisioterapia respiratória realizada">Fisioterapia resp.</span><span class="chip" data-val="retirada de pontos realizada">Retirada de pontos</span><span class="chip" data-val="troca de bolsa de ostomia realizada">Troca bolsa ostomia</span>
+        <div class="field-group"><label>Tipo de dieta / aceitação</label>
+          <div class="chip-group" id="dieta">
+            <span class="chip" data-val="dieta branda">Branda</span>
+            <span class="chip" data-val="dieta pastosa">Pastosa</span>
+            <span class="chip" data-val="dieta líquida">Líquida</span>
+            <span class="chip" data-val="dieta hipercalórica e hiperproteica">Hipercalórica/hiperproteica</span>
+            <span class="chip" data-val="aceita bem a dieta">Aceita bem</span>
+            <span class="chip" data-val="aceita parcialmente a dieta">Aceita parcialmente</span>
+            <span class="chip" data-val="não aceita a dieta">Não aceita</span>
           </div>
         </div>
-        <div class="field-group" style="margin-top:20px"><label>Encaminhamentos / exames aguardados</label><textarea id="encaminhamentos" placeholder="Ex: Aguardando resultado de hemograma..."></textarea></div>
-        <div class="field-group" style="margin-top:16px"><label>Orientações prestadas</label><textarea id="orientacoes" placeholder="Ex: Orientado sobre deambulação precoce..."></textarea></div>
-        <div class="field-group" style="margin-top:16px"><label>Nome do profissional</label><input type="text" id="profissional" placeholder="Ex: Enf. João Silva"></div>
-        <div class="nav-btns"><button class="btn btn-secondary" onclick="goTo(9)">← Voltar</button><button class="btn btn-primary" onclick="goTo(11)">Revisar →</button></div>
+        <div class="field-group"><label>Abdome</label>
+          <div class="chip-group" id="abdome">
+            <span class="chip" data-val="abdome plano e flácido">Plano e flácido</span>
+            <span class="chip" data-val="abdome globoso">Globoso</span>
+            <span class="chip" data-val="abdome distendido">Distendido</span>
+            <span class="chip" data-val="abdome timpânico">Timpânico</span>
+            <span class="chip" data-val="abdome doloroso à palpação">Doloroso à palpação</span>
+            <span class="chip" data-val="com ruídos hidroaéreos presentes">RHA presentes</span>
+            <span class="chip" data-val="com ruídos hidroaéreos diminuídos">RHA diminuídos</span>
+            <span class="chip" data-val="com ruídos hidroaéreos ausentes">RHA ausentes</span>
+          </div>
+        </div>
+        <div class="field-group"><label>Evacuações</label>
+          <div class="chip-group" id="evacuacao">
+            <span class="chip" data-val="evacuações presentes no período">Presentes</span>
+            <span class="chip" data-val="sem evacuações no período">Ausentes no período</span>
+            <span class="chip" data-val="constipação intestinal">Constipação</span>
+            <span class="chip" data-val="diarreia">Diarreia</span>
+            <span class="chip" data-val="fezes pastosas">Fezes pastosas</span>
+            <span class="chip" data-val="melena">Melena</span>
+            <span class="chip" data-val="hematoquezia">Hematoquezia</span>
+            <span class="chip" data-val="colostomia funcionante">Colostomia</span>
+            <span class="chip" data-val="ileostomia funcionante">Ileostomia</span>
+          </div>
+        </div>
+        <div class="field-group"><label>Obs. gastrointestinais</label><textarea id="gastro-obs" placeholder="Náuseas, êmese, sangramento digestivo, débito de drenagem gástrica..." style="min-height:60px"></textarea></div>
       </div>
 
-      <!-- STEP 11 -->
-      <div class="step-view" id="step-11">
-        <div class="step-title">Revisar e Gerar Evolução</div>
-        <div class="step-subtitle">Confira o resumo e gere o texto da evolução.</div>
-        <div id="summary-box" style="background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:20px;margin-bottom:20px;font-size:0.85rem;line-height:1.8;color:var(--muted);"></div>
-        <div class="field-group"><label>Observações adicionais</label><textarea id="obs-extra" placeholder="Qualquer informação adicional..."></textarea></div>
-        <div class="nav-btns">
-          <button class="btn btn-secondary" onclick="goTo(10)">← Voltar</button>
-          <button class="btn btn-success" onclick="generateEvolution()">✦ Gerar Evolução</button>
+      <!-- 6. GENITOURINÁRIO -->
+      <div class="section-card">
+        <div class="section-header">
+          <div class="section-num">6</div>
+          <div class="section-title">Genitourinário</div>
+          <div class="section-subtitle">Forma de diurese · Aspecto · Débito</div>
+        </div>
+        <div class="field-group"><label>Forma de diurese</label>
+          <div class="chip-group" id="diurese-forma">
+            <span class="chip" data-val="diurese espontânea">Espontânea</span>
+            <span class="chip" data-val="em uso de sonda vesical de demora (SVD)">SVD</span>
+            <span class="chip" data-val="em uso de cateter suprapúbico (cistostomia)">Cistostomia</span>
+            <span class="chip" data-val="em uso de fralda">Fralda</span>
+            <span class="chip" data-val="em hemodiálise (HD)">Hemodiálise</span>
+            <span class="chip" data-val="em terapia de substituição renal contínua (TRRC)">TRRC</span>
+          </div>
+        </div>
+        <div class="field-group"><label>Volume e padrão de diurese</label>
+          <div class="chip-group" id="diurese-vol">
+            <span class="chip" data-val="diurese preservada">Preservada</span>
+            <span class="chip" data-val="oligúria">Oligúria</span>
+            <span class="chip" data-val="anúria">Anúria</span>
+            <span class="chip" data-val="poliúria">Poliúria</span>
+            <span class="chip" data-val="disúria referida">Disúria</span>
+          </div>
+        </div>
+        <div class="row2">
+          <div class="field-group"><label>Débito urinário</label><input type="text" id="debito-urinario" placeholder="Ex: 45 mL/h ou 540 mL no turno"></div>
+          <div class="field-group"><label>Aspecto da urina</label>
+            <select id="aspecto-urina">
+              <option value="">Selecione</option>
+              <option>Amarela clara</option>
+              <option>Amarela escura / concentrada</option>
+              <option>Turva</option>
+              <option>Hematúrica (avermelhada)</option>
+              <option>Colúrica (acastanhada)</option>
+            </select>
+          </div>
+        </div>
+        <div class="field-group"><label>Obs. genitourinárias</label><textarea id="gu-obs" placeholder="Sedimento, odor, sinais de ITU, balanço hídrico do turno..." style="min-height:60px"></textarea></div>
+      </div>
+
+      <!-- 7. TERMORREGULAÇÃO -->
+      <div class="section-card">
+        <div class="section-header">
+          <div class="section-num">7</div>
+          <div class="section-title">Termorregulação</div>
+          <div class="section-subtitle">Temperatura</div>
+        </div>
+        <div class="row2">
+          <div class="field-group"><label>Temperatura axilar (°C)</label><input type="text" id="temp" placeholder="Ex: 37.2"></div>
+          <div class="field-group"><label>Classificação</label>
+            <div class="chip-group" id="temp-class" style="margin-top:6px">
+              <span class="chip" data-val="afebril">Afebril</span>
+              <span class="chip" data-val="febril">Febril</span>
+              <span class="chip" data-val="hipotérmico">Hipotérmico</span>
+              <span class="chip" data-val="em protocolo de hipotermia terapêutica">Hipotermia terapêutica</span>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
 
-    <!-- RESULT PANEL -->
+      <!-- 8. MOTRICIDADE E HIGIENE -->
+      <div class="section-card">
+        <div class="section-header">
+          <div class="section-num">8</div>
+          <div class="section-title">Motricidade e Higiene</div>
+          <div class="section-subtitle">Deambulação · Local do banho · Decúbito</div>
+        </div>
+        <div class="field-group"><label>Forma de deambulação</label>
+          <div class="chip-group" id="deambulacao">
+            <span class="chip" data-val="deambulando sem auxílio">Sem auxílio</span>
+            <span class="chip" data-val="deambulando com auxílio">Com auxílio</span>
+            <span class="chip" data-val="restrito ao leito">Restrito ao leito</span>
+            <span class="chip" data-val="acamado">Acamado</span>
+            <span class="chip" data-val="em cadeira de rodas">Cadeira de rodas</span>
+          </div>
+        </div>
+        <div class="field-group"><label>Local / forma do banho</label>
+          <div class="chip-group" id="banho">
+            <span class="chip" data-val="banho realizado no leito">No leito</span>
+            <span class="chip" data-val="banho realizado no chuveiro">No chuveiro</span>
+            <span class="chip" data-val="banho com auxílio no chuveiro">Com auxílio no chuveiro</span>
+            <span class="chip" data-val="higiene corporal parcial realizada">Higiene parcial</span>
+            <span class="chip" data-val="paciente auto-higienizado">Auto-higienizado</span>
+          </div>
+        </div>
+        <div class="field-group"><label>Mudança de decúbito</label>
+          <div class="chip-group" id="decubito">
+            <span class="chip" data-val="mudança de decúbito realizada a cada 2h">Decúbito cada 2h</span>
+            <span class="chip" data-val="em posição prona">Em pronação</span>
+            <span class="chip" data-val="em posição semi-Fowler (30°)">Semi-Fowler 30°</span>
+            <span class="chip" data-val="em posição supina">Supina</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 9. PELE / EXTREMIDADES -->
+      <div class="section-card">
+        <div class="section-header">
+          <div class="section-num">9</div>
+          <div class="section-title">Pele e Extremidades</div>
+          <div class="section-subtitle">Integridade · LP · Edemas</div>
+        </div>
+        <div class="field-group"><label>Estado da pele e mucosas</label>
+          <div class="chip-group" id="pele">
+            <span class="chip" data-val="pele íntegra">Íntegra</span>
+            <span class="chip" data-val="corada">Corada</span>
+            <span class="chip" data-val="normocorada">Normocorada</span>
+            <span class="chip" data-val="hipocorada">Hipocorada</span>
+            <span class="chip" data-val="pálida">Pálida</span>
+            <span class="chip" data-val="ictérica">Ictérica</span>
+            <span class="chip" data-val="cianótica">Cianótica</span>
+            <span class="chip" data-val="acianótica">Acianótica</span>
+            <span class="chip" data-val="ressecada">Ressecada</span>
+            <span class="chip" data-val="com petéquias">Petéquias</span>
+            <span class="chip" data-val="com equimoses">Equimoses</span>
+          </div>
+        </div>
+        <div class="field-group"><label>Lesão por pressão (LP)</label>
+          <div class="chip-group" id="lp">
+            <span class="chip" data-val="sem lesão por pressão">Sem LP</span>
+            <span class="chip" data-val="LP estágio I presente">LP Estágio I</span>
+            <span class="chip" data-val="LP estágio II presente">LP Estágio II</span>
+            <span class="chip" data-val="LP estágio III presente">LP Estágio III</span>
+            <span class="chip" data-val="LP estágio IV presente">LP Estágio IV</span>
+            <span class="chip" data-val="LP não classificável">LP não classificável</span>
+          </div>
+        </div>
+        <div class="field-group"><label>Edemas</label>
+          <div class="chip-group" id="edemas">
+            <span class="chip" data-val="sem edemas">Sem edemas</span>
+            <span class="chip" data-val="edema em membros inferiores (MMII)">Edema MMII</span>
+            <span class="chip" data-val="edema em membros superiores (MMSS)">Edema MMSS</span>
+            <span class="chip" data-val="edema facial">Edema facial</span>
+            <span class="chip" data-val="anasarca">Anasarca</span>
+            <span class="chip" data-val="sinal de cacifo positivo">Cacifo +</span>
+          </div>
+        </div>
+        <div class="field-group"><label>Obs. pele / curativos / feridas</label><textarea id="pele-obs" placeholder="Localização e estadiamento de LP, curativos realizados, feridas cirúrgicas, drenos..."></textarea></div>
+      </div>
+
+      <!-- 10. DEVICES -->
+      <div class="section-card">
+        <div class="section-header">
+          <div class="section-num">10</div>
+          <div class="section-title">Dispositivos (Devices)</div>
+          <div class="section-subtitle">Todos os acessos, tubos e sondas no corpo</div>
+        </div>
+        <div class="field-group"><label>Acessos vasculares</label>
+          <div class="chip-group" id="acessos">
+            <span class="chip" data-val="acesso venoso periférico (AVP) pérvio">AVP pérvio</span>
+            <span class="chip" data-val="cateter venoso central (CVC) pérvio">CVC pérvio</span>
+            <span class="chip" data-val="cateter de artéria pulmonar (Swan-Ganz)">Swan-Ganz</span>
+            <span class="chip" data-val="cateter arterial (linha arterial) pérvio">Linha arterial</span>
+            <span class="chip" data-val="PICC pérvio">PICC</span>
+            <span class="chip" data-val="cateter de diálise (Schilley) pérvio">Cateter diálise</span>
+          </div>
+        </div>
+        <div class="field-group"><label>Via aérea artificial</label>
+          <div class="chip-group" id="via-aerea">
+            <span class="chip" data-val="tubo orotraqueal (TOT) fixado">TOT</span>
+            <span class="chip" data-val="traqueostomia (TQT) presente">TQT</span>
+            <span class="chip" data-val="máscara laríngea">Máscara laríngea</span>
+          </div>
+        </div>
+        <div class="field-group"><label>Drenos, sondas e ostomias</label>
+          <div class="chip-group" id="drenos">
+            <span class="chip" data-val="sonda vesical de demora (SVD)">SVD</span>
+            <span class="chip" data-val="sonda nasogástrica (SNG)">SNG</span>
+            <span class="chip" data-val="sonda nasoenteral (SNE)">SNE</span>
+            <span class="chip" data-val="dreno de tórax">Dreno tórax</span>
+            <span class="chip" data-val="dreno abdominal">Dreno abdominal</span>
+            <span class="chip" data-val="dreno de mediastino">Dreno mediastino</span>
+            <span class="chip" data-val="sonda de Kehr">Sonda Kehr</span>
+            <span class="chip" data-val="gastrostomia (GTT)">GTT</span>
+            <span class="chip" data-val="colostomia">Colostomia</span>
+            <span class="chip" data-val="ileostomia">Ileostomia</span>
+          </div>
+        </div>
+        <div class="field-group"><label>Localização e fixação dos dispositivos</label><textarea id="devices-obs" placeholder="Ex: CVC em jugular D pérvio sem sinais flogísticos, AVP em MSD 20G, TOT fixado em 22cm na comissura labial E, SVD drenando urina amarela clara..."></textarea></div>
+      </div>
+
+      <!-- 11. ANTIBIOTICOTERAPIA -->
+      <div class="section-card">
+        <div class="section-header">
+          <div class="section-num">11</div>
+          <div class="section-title">Antibioticoterapia</div>
+          <div class="section-subtitle">ATBs em uso</div>
+        </div>
+        <div class="field-group"><label>Antibióticos em uso</label><textarea id="antibioticos" placeholder="Ex: Meropeném 1g EV 8/8h (D5 ATB), Vancomicina 1g EV 12/12h, Fluconazol 400mg EV 24/24h..."></textarea></div>
+      </div>
+
+      <!-- 12. PENDÊNCIAS / CONDUTAS -->
+      <div class="section-card">
+        <div class="section-header">
+          <div class="section-num">12</div>
+          <div class="section-title">Pendências e Condutas</div>
+          <div class="section-subtitle">Ações e encaminhamentos do turno</div>
+        </div>
+        <div class="field-group"><label>Pendências</label><textarea id="pendencias" placeholder="Ex: Aguardando resultado de hemocultura, raio-X de tórax pendente, avaliação de fisioterapia solicitada..."></textarea></div>
+        <div class="field-group"><label>Condutas realizadas</label><textarea id="condutas" placeholder="Ex: Realizado mudança de decúbito, curativo em LP sacral, coleta de hemograma, administração de medicamentos conforme prescrição médica..."></textarea></div>
+      </div>
+
+      <!-- GERAR -->
+      <div class="generate-bar">
+        <div>
+          <div class="generate-bar-title">Pronto para gerar?</div>
+          <div style="color:var(--muted);font-size:0.82rem;margin-top:4px">Informe o profissional e clique em Gerar Evolução.</div>
+        </div>
+        <div style="flex:1;min-width:220px">
+          <input type="text" id="profissional" placeholder="Ex: Enf. Maria Souza — COREN/CE 123456">
+        </div>
+        <button class="btn btn-success" onclick="generateEvolution()">✦ Gerar Evolução</button>
+      </div>
+
+    </div><!-- /#content -->
+
+    <!-- RESULT -->
     <div id="result-panel">
       <div class="result-title">Evolução Gerada</div>
       <div id="evolution-text"></div>
-      <div class="result-actions" id="result-actions">
+      <div class="result-actions">
         <button class="btn btn-primary" onclick="copyText()">📋 Copiar</button>
         <button class="btn btn-secondary" onclick="newEvolution()">+ Nova Evolução</button>
         <button class="btn btn-secondary" onclick="backToEdit()">✎ Editar</button>
       </div>
     </div>
 
-    <!-- HISTORY PANEL -->
+    <!-- HISTORY -->
     <div id="history-panel">
       <div class="history-title">Histórico de Evoluções</div>
       <div id="history-list"><div class="hist-empty">Carregando...</div></div>
@@ -434,7 +622,8 @@
   </main>
 </div>
 
-<!-- HISTORY VIEW MODAL -->
+<button id="fab-top" onclick="document.getElementById('main-scroll').scrollTo({top:0,behavior:'smooth'})" title="Voltar ao topo">↑</button>
+
 <div class="modal-overlay" id="modal-hist-view">
   <div class="modal">
     <button class="close-btn" onclick="closeModal()">✕</button>
@@ -454,7 +643,6 @@
 const SUPABASE_URL = 'https://ljcgopkcxuwptfdntmxo.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_ztB2XKEk4FVjTkmU8Dl_Zg_Rog9ON_W';
 
-// ── Supabase ──────────────────────────────────────────────────────────────
 async function sbInsert(data) {
   const r = await fetch(`${SUPABASE_URL}/rest/v1/evolucoes`, {
     method: 'POST',
@@ -479,257 +667,223 @@ async function sbDelete(id) {
   if (!r.ok) throw new Error(await r.text());
 }
 
-// ── Toast ─────────────────────────────────────────────────────────────────
 function toast(msg, dur=2500) {
   const t = document.getElementById('toast');
   t.textContent = msg; t.classList.add('show');
   setTimeout(() => t.classList.remove('show'), dur);
 }
 
-// ── Navigation ────────────────────────────────────────────────────────────
-const STEPS = 12; let current = 0;
-function goTo(n) {
-  document.getElementById(`step-${current}`).classList.remove('visible');
-  document.querySelectorAll('.step-btn').forEach(b => b.classList.remove('active'));
-  current = n;
-  document.getElementById(`step-${n}`).classList.add('visible');
-  document.getElementById(`sb-${n}`).classList.add('active');
-  document.getElementById('progress-fill').style.width = `${Math.round((n/(STEPS-1))*100)}%`;
-  if (n === 11) buildSummary();
-  document.getElementById('content').style.display = 'block';
-  document.getElementById('result-panel').classList.remove('visible');
-  document.getElementById('history-panel').classList.remove('visible');
-}
-
-// ── Chips ─────────────────────────────────────────────────────────────────
 document.querySelectorAll('.chip-group').forEach(g => {
   g.addEventListener('click', e => { const c = e.target.closest('.chip'); if(c) c.classList.toggle('selected'); });
 });
 function chips(id) { return [...document.querySelectorAll(`#${id} .chip.selected`)].map(c => c.dataset.val); }
-function val(id) { return (document.getElementById(id)||{}).value || ''; }
+function val(id) { const el = document.getElementById(id); return el ? el.value.trim() : ''; }
 
-// ── Collect ───────────────────────────────────────────────────────────────
-function collectData() {
-  return {
-    iniciais: val('iniciais'), idade: val('idade'), sexo: val('sexo'), dih: val('dih'), diagnostico: val('diagnostico'),
-    estadoGeral: chips('estado-geral'), estadoObs: val('estado-obs'),
-    consciencia: chips('consciencia'), glasgow: val('glasgow'), orientacao: chips('orientacao'),
-    emocional: chips('emocional'), higiene: chips('higiene'),
-    deambulacao: chips('deambulacao'), nutricao: chips('nutricao'), dieta: chips('dieta'), sono: chips('sono'),
-    fc: val('fc'), fr: val('fr'), temp: val('temp'), pa: val('pa'), spo2: val('spo2'), vitaisExtra: chips('vitais-extra'),
-    pele: chips('pele'), peleObs: val('pele-obs'), acesso: chips('acesso'), acessoLocal: val('acesso-local'),
-    hidratacao: chips('hidratacao'), perfusao: chips('perfusao'),
-    diurese: chips('diurese'), evacuacao: chips('evacuacao'),
-    queixas: chips('queixas'), dorLocal: val('dor-local'), dorEscala: val('dor-escala'),
-    ausculta: chips('ausculta'), abd: chips('abd'),
-    procedimentos: chips('procedimentos'), encaminhamentos: val('encaminhamentos'),
-    orientacoes: val('orientacoes'), profissional: val('profissional'), obsExtra: val('obs-extra'),
-  };
+function classifyFC(fc) {
+  if (!fc) return '';
+  const v = parseInt(fc);
+  if (v < 60) return 'bradicárdico';
+  if (v > 100) return 'taquicárdico';
+  return 'normocárdico';
 }
-
-// ── Summary ───────────────────────────────────────────────────────────────
-function buildSummary() {
-  const d = collectData(); let html = '';
-  const add = (l,v) => { if(v) html += `<div><b style="color:var(--text)">${l}:</b> ${v}</div>`; };
-  add('Paciente', `${d.iniciais}, ${d.idade}a, ${d.sexo}, ${d.dih}º DIH — HD: ${d.diagnostico}`);
-  add('Estado Geral', d.estadoGeral.join(', '));
-  add('Consciência', d.consciencia.join(', ') + (d.glasgow?` (Glasgow ${d.glasgow})`:''));
-  add('Orientação', d.orientacao.join(', '));
-  add('Emocional / Higiene', [...d.emocional,...d.higiene].join(', '));
-  add('Deambulação', d.deambulacao.join(', '));
-  add('Nutrição / Dieta', [...d.nutricao,...d.dieta].join(', '));
-  add('Sono', d.sono.join(', '));
-  add('Vitais', [d.fc&&`FC ${d.fc}bpm`,d.fr&&`FR ${d.fr}irpm`,d.temp&&`T° ${d.temp}°C`,d.pa&&`PA ${d.pa}mmHg`,d.spo2&&`SpO2 ${d.spo2}%`].filter(Boolean).join(' | '));
-  add('Pele', d.pele.join(', '));
-  add('Acesso', [...d.acesso,d.acessoLocal].filter(Boolean).join(', '));
-  add('Hidratação / Perfusão', [...d.hidratacao,...d.perfusao].join(', '));
-  add('Diurese / Evacuações', [...d.diurese,...d.evacuacao].join(', '));
-  add('Queixas', d.queixas.join(', ') + (d.dorLocal?` | Dor em ${d.dorLocal} (${d.dorEscala}/10)`:''));
-  add('Ausculta', [...d.ausculta,...d.abd].join(', '));
-  add('Procedimentos', d.procedimentos.join(', '));
-  add('Profissional', d.profissional);
-  document.getElementById('summary-box').innerHTML = html || '<span style="color:var(--muted)">Preencha as etapas anteriores.</span>';
+function classifyTemp(t) {
+  if (!t) return '';
+  const v = parseFloat(t);
+  if (v < 36) return 'hipotérmico';
+  if (v >= 37.8) return 'febril';
+  return 'afebril';
 }
-
-// ── Gerador de texto (sem IA) ─────────────────────────────────────────────
-function classifyVitals(d) {
-  const parts = [];
-  if (d.fc) {
-    const fc = parseInt(d.fc);
-    if (fc < 60) parts.push('bradicárdico');
-    else if (fc > 100) parts.push('taquicárdico');
-    else parts.push('normocárdico');
-  }
-  if (d.fr) {
-    const fr = parseInt(d.fr);
-    if (fr < 12) parts.push('bradipneico');
-    else if (fr > 20) parts.push('taquipneico');
-    else parts.push('eupneico');
-  }
-  if (d.temp) {
-    const t = parseFloat(d.temp);
-    if (t < 36) parts.push('hipotérmico');
-    else if (t >= 37.8) parts.push('febril');
-    else parts.push('afebril');
-  }
-  if (d.pa) {
-    const m = d.pa.match(/(\d+)[xX×](\d+)/);
-    if (m) {
-      const s = parseInt(m[1]);
-      if (s >= 140) parts.push('hipertenso');
-      else if (s < 90) parts.push('hipotenso');
-      else parts.push('normotenso');
-    }
-  }
-  return parts;
+function classifyPA(pa) {
+  if (!pa) return '';
+  const m = pa.match(/(\d+)[xX×\/](\d+)/);
+  if (!m) return '';
+  const s = parseInt(m[1]);
+  if (s >= 140) return 'hipertenso';
+  if (s < 90) return 'hipotenso';
+  return 'normotenso';
 }
 
 function buildText(d) {
-  const sexo = d.sexo === 'Feminino' ? 'feminino' : d.sexo === 'Masculino' ? 'masculino' : '';
-  const pronome = d.sexo === 'Feminino' ? 'a' : 'o';
-  const artigo = d.sexo === 'Feminino' ? 'a' : 'o';
-
   let txt = '';
 
-  // Cabeçalho
-  txt += `Cliente ${d.iniciais||'N/I'}`;
-  if (d.idade) txt += `, ${d.idade} anos`;
-  if (sexo) txt += `, sexo ${sexo}`;
-  if (d.dih) txt += `, no ${d.dih}º DIH`;
-  if (d.diagnostico) txt += ` por HD de ${d.diagnostico}`;
-  txt += '. ';
+  // CABEÇALHO
+  txt += 'EVOLUÇÃO DE ENFERMAGEM\n';
+  const loc = [d.setor, d.leito].filter(Boolean).join(' — ');
+  if (loc) txt += loc + '\n';
+  txt += '\n';
+  txt += 'Paciente: ' + (d.nome || 'N/I');
+  if (d.idade) txt += ', ' + d.idade + ' anos';
+  if (d.dih) txt += ', internado em ' + d.dih;
+  if (d.dihNum) txt += ' (' + d.dihNum + 'º DIH)';
+  txt += '\n';
+  if (d.diagnostico) txt += 'HD: ' + d.diagnostico + '\n';
+  if (d.historico) txt += 'Histórico/comorbidades: ' + d.historico + '\n';
+  txt += '\n';
 
-  // Estado geral
-  if (d.estadoGeral.length) {
-    txt += `Evolui ${d.estadoGeral.join(' e ')}`;
-    if (d.estadoObs) txt += ` (${d.estadoObs})`;
-    txt += '. ';
-  }
+  // NEUROLÓGICO
+  txt += 'NEUROLÓGICO: ';
+  const neuroArr = [...d.consciencia, ...d.orientacao];
+  if (neuroArr.length) txt += neuroArr.join(', ') + '. ';
+  if (d.sedoanalgesia) txt += 'Em uso de sedoanalgesia: ' + d.sedoanalgesia + '. ';
+  if (d.glasgow) txt += 'Glasgow: ' + d.glasgow + '. ';
+  if (d.rass) txt += d.rass + '. ';
+  if (d.has.length) txt += 'Escala de HAS: ' + d.has.join(', ') + '. ';
+  if (d.neuroObs) txt += d.neuroObs + '. ';
+  txt += '\n\n';
 
-  // Consciência e orientação
-  const consOrient = [...d.consciencia, ...d.orientacao];
-  if (consOrient.length) {
-    txt += `Apresenta-se ${consOrient.join(', ')}`;
-    if (d.glasgow) txt += ` (Glasgow ${d.glasgow})`;
-    txt += '. ';
-  }
+  // CARDIOVASCULAR
+  txt += 'CARDIOVASCULAR: ';
+  if (d.hemodinamico.length) txt += d.hemodinamico.join(', ') + '. ';
+  const fcClass = classifyFC(d.fc);
+  const paClass = classifyPA(d.pa);
+  const classParts = [fcClass, paClass].filter(Boolean);
+  if (classParts.length) txt += classParts.join(', ') + '. ';
+  const vitais = [d.fc && 'FC: ' + d.fc + ' bpm', d.pa && 'PA: ' + d.pa + ' mmHg', d.pam && 'PAM: ' + d.pam + ' mmHg'].filter(Boolean);
+  if (vitais.length) txt += '(' + vitais.join(', ') + '). ';
+  if (d.ritmo.length) txt += 'Ritmo: ' + d.ritmo.join(', ') + '. ';
+  if (d.perfusao.length) txt += 'Perfusão periférica: ' + d.perfusao.join(', ') + '. ';
+  if (d.dva) txt += 'DVA em uso: ' + d.dva + '. ';
+  if (d.cardioObs) txt += d.cardioObs + '. ';
+  txt += '\n\n';
 
-  // Emocional
-  if (d.emocional.length) txt += `Estado emocional ${d.emocional.join(' e ')}. `;
-
-  // Higiene
-  if (d.higiene.length) txt += `${d.higiene.join(', ')}, `;
-
-  // Deambulação
-  if (d.deambulacao.length) txt += `${d.deambulacao.join(', ')}. `;
-
-  // Nutrição e dieta
-  const nutDiet = [...d.nutricao, ...d.dieta];
-  if (nutDiet.length) txt += `${nutDiet.join(', ')}. `;
-
-  // Sono
-  if (d.sono.length) txt += `Sono e repouso: ${d.sono.join(', ')}. `;
-
-  // Parâmetros vitais
-  const vClass = classifyVitals(d);
-  const vVals = [
-    d.fc && `FC: ${d.fc} bpm`,
-    d.fr && `FR: ${d.fr} irpm`,
-    d.temp && `Tax: ${d.temp}°C`,
-    d.pa && `PA: ${d.pa} mmHg`,
-    d.spo2 && `SpO2: ${d.spo2}%`,
+  // RESPIRATÓRIO
+  txt += 'RESPIRATÓRIO: ';
+  if (d.modoResp.length) txt += d.modoResp.join(', ') + '. ';
+  if (d.modoVm.length) txt += 'Modo ventilatório: ' + d.modoVm.join(', ') + '. ';
+  const paramVm = [
+    d.vc && 'VC: ' + d.vc + ' mL',
+    d.fio2 && 'FiO2: ' + d.fio2 + '%',
+    d.peep && 'PEEP: ' + d.peep + ' cmH2O',
+    d.ps && 'PS: ' + d.ps + ' cmH2O',
+    d.fr && 'FR: ' + d.fr + ' irpm'
   ].filter(Boolean);
-  if (vClass.length || vVals.length) {
-    if (vClass.length) txt += `Parâmetros vitais: ${vClass.join(', ')}`;
-    if (vVals.length) txt += ` (${vVals.join(', ')})`;
-    if (d.vitaisExtra.length) txt += `, ${d.vitaisExtra.join(', ')}`;
-    txt += '. ';
+  if (paramVm.length) txt += 'Parâmetros: ' + paramVm.join(' | ') + '. ';
+  if (d.spo2) txt += 'SpO2: ' + d.spo2 + '%. ';
+  if (d.ausculta.length) txt += 'Ausculta pulmonar: ' + d.ausculta.join(', ') + '. ';
+  if (d.respObs) txt += d.respObs + '. ';
+  txt += '\n\n';
+
+  // GASTROINTESTINAL
+  txt += 'GASTROINTESTINAL: ';
+  const gastroArr = [...d.alimentacao, ...d.dieta];
+  if (gastroArr.length) txt += gastroArr.join(', ') + '. ';
+  if (d.abdome.length) txt += 'Abdome: ' + d.abdome.join(', ') + '. ';
+  if (d.evacuacao.length) txt += 'Evacuações: ' + d.evacuacao.join(', ') + '. ';
+  if (d.gastroObs) txt += d.gastroObs + '. ';
+  txt += '\n\n';
+
+  // GENITOURINÁRIO
+  txt += 'GENITOURINÁRIO: ';
+  if (d.diureseForma.length) txt += d.diureseForma.join(', ') + '. ';
+  if (d.diureseVol.length) txt += d.diureseVol.join(', ') + '. ';
+  if (d.debitoUrinario) txt += 'Débito urinário: ' + d.debitoUrinario + '. ';
+  if (d.aspectoUrina) txt += 'Aspecto: ' + d.aspectoUrina + '. ';
+  if (d.guObs) txt += d.guObs + '. ';
+  txt += '\n\n';
+
+  // TERMORREGULAÇÃO
+  txt += 'TERMORREGULAÇÃO: ';
+  const tempClass = classifyTemp(d.temp);
+  if (tempClass) txt += tempClass;
+  if (d.temp) txt += ' (Tax: ' + d.temp + '°C)';
+  if (d.tempClass.length) txt += '. ' + d.tempClass.join(', ');
+  txt += '. \n\n';
+
+  // MOTRICIDADE
+  txt += 'MOTRICIDADE: ';
+  if (d.deambulacao.length) txt += d.deambulacao.join(', ') + '. ';
+  if (d.banho.length) txt += d.banho.join(', ') + '. ';
+  if (d.decubito.length) txt += d.decubito.join(', ') + '. ';
+  txt += '\n\n';
+
+  // PELE/EXTREMIDADES
+  txt += 'PELE/EXTREMIDADES: ';
+  if (d.pele.length) txt += 'Pele e mucosas: ' + d.pele.join(', ') + '. ';
+  if (d.lp.length) txt += d.lp.join(', ') + '. ';
+  if (d.edemas.length) txt += d.edemas.join(', ') + '. ';
+  if (d.peleObs) txt += d.peleObs + '. ';
+  txt += '\n\n';
+
+  // DEVICES
+  txt += 'DEVICES: ';
+  const devAll = [...d.acessos, ...d.viaAerea, ...d.drenos];
+  if (devAll.length) txt += devAll.join(' | ') + '. ';
+  if (d.devicesObs) txt += d.devicesObs + '. ';
+  txt += '\n\n';
+
+  // ANTIBIOTICOTERAPIA
+  if (d.antibioticos) {
+    txt += 'ANTIBIOTICOTERAPIA: ' + d.antibioticos + '.\n\n';
   }
 
-  // Pele
-  if (d.pele.length) {
-    txt += `Pele e mucosas ${d.pele.join(', ')}`;
-    if (d.peleObs) txt += ` — ${d.peleObs}`;
-    txt += '. ';
-  }
+  // PENDÊNCIAS
+  if (d.pendencias) txt += 'PENDÊNCIAS: ' + d.pendencias + '\n\n';
 
-  // Acesso venoso
-  const acessoInfo = [...d.acesso, d.acessoLocal].filter(Boolean);
-  if (acessoInfo.length) txt += `${acessoInfo.join(', ')}. `;
+  // CONDUTAS
+  if (d.condutas) txt += 'CONDUTAS: ' + d.condutas + '\n\n';
 
-  // Hidratação e perfusão
-  const hidPerf = [...d.hidratacao, ...d.perfusao];
-  if (hidPerf.length) txt += `${hidPerf.join(', ')}. `;
+  txt += 'Paciente segue aos cuidados da equipe multiprofissional.\n\n';
+  txt += '--------\n' + (d.profissional || '');
 
-  // Eliminações
-  if (d.diurese.length) txt += `Eliminações urinárias: ${d.diurese.join(', ')}. `;
-  if (d.evacuacao.length) txt += `Eliminações intestinais: ${d.evacuacao.join(', ')}. `;
-
-  // Queixas e dor
-  if (d.queixas.length) {
-    txt += `${d.queixas.join(', ')}`;
-    if (d.dorLocal || d.dorEscala) txt += ` — dor em ${d.dorLocal||'local não especificado'}, escala ${d.dorEscala||'N/I'}/10`;
-    txt += '. ';
-  }
-
-  // Ausculta
-  if (d.ausculta.length) txt += `Ausculta pulmonar: ${d.ausculta.join(', ')}. `;
-  if (d.abd.length) txt += `Ausculta abdominal: ${d.abd.join(', ')}. `;
-
-  // Procedimentos
-  if (d.procedimentos.length) txt += `Procedimentos realizados: ${d.procedimentos.join(', ')}. `;
-
-  // Encaminhamentos
-  if (d.encaminhamentos) txt += `${d.encaminhamentos}. `;
-
-  // Orientações
-  if (d.orientacoes) txt += `${d.orientacoes}. `;
-
-  // Obs extra
-  if (d.obsExtra) txt += `${d.obsExtra}. `;
-
-  // Encerramento
-  txt += `Segue sob cuidados de enfermagem.`;
-  txt += `\n\n--------\n${d.profissional || ''}`;
-
-  return txt.replace(/ +/g, ' ').replace(/\. \./g, '.').trim();
+  return txt.replace(/  +/g, ' ').replace(/\. \./g, '.').replace(/: \./g, '.').trim();
 }
 
-// ── Generate ──────────────────────────────────────────────────────────────
+function collectData() {
+  return {
+    setor: val('setor'), leito: val('leito'), nome: val('nome'), idade: val('idade'),
+    dih: val('dih'), dihNum: val('dih-num'), diagnostico: val('diagnostico'), historico: val('historico'),
+    consciencia: chips('consciencia'), orientacao: chips('orientacao'),
+    sedoanalgesia: val('sedoanalgesia'), glasgow: val('glasgow'), rass: val('rass'),
+    has: chips('has'), neuroObs: val('neuro-obs'),
+    hemodinamico: chips('hemodinamico'), fc: val('fc'), pa: val('pa'), pam: val('pam'),
+    ritmo: chips('ritmo'), perfusao: chips('perfusao'), dva: val('dva'), cardioObs: val('cardio-obs'),
+    modoResp: chips('modo-resp'), modoVm: chips('modo-vm'),
+    vc: val('vc'), fio2: val('fio2'), peep: val('peep'), ps: val('ps'), fr: val('fr'),
+    spo2: val('spo2'), ausculta: chips('ausculta'), respObs: val('resp-obs'),
+    alimentacao: chips('alimentacao'), dieta: chips('dieta'),
+    abdome: chips('abdome'), evacuacao: chips('evacuacao'), gastroObs: val('gastro-obs'),
+    diureseForma: chips('diurese-forma'), diureseVol: chips('diurese-vol'),
+    debitoUrinario: val('debito-urinario'), aspectoUrina: val('aspecto-urina'), guObs: val('gu-obs'),
+    temp: val('temp'), tempClass: chips('temp-class'),
+    deambulacao: chips('deambulacao'), banho: chips('banho'), decubito: chips('decubito'),
+    pele: chips('pele'), lp: chips('lp'), edemas: chips('edemas'), peleObs: val('pele-obs'),
+    acessos: chips('acessos'), viaAerea: chips('via-aerea'), drenos: chips('drenos'), devicesObs: val('devices-obs'),
+    antibioticos: val('antibioticos'),
+    pendencias: val('pendencias'), condutas: val('condutas'),
+    profissional: val('profissional'),
+  };
+}
+
 async function generateEvolution() {
   const d = collectData();
   const text = buildText(d);
-
   document.getElementById('content').style.display = 'none';
   document.getElementById('result-panel').classList.add('visible');
   document.getElementById('evolution-text').textContent = text;
-
-  // Salvar no Supabase
+  document.getElementById('main-scroll').scrollTo({top:0,behavior:'smooth'});
   try {
-    await sbInsert({ paciente_iniciais: d.iniciais||'N/I', diagnostico: d.diagnostico||'', texto_evolucao: text, dados_json: d });
+    await sbInsert({ paciente_iniciais: d.nome||'N/I', diagnostico: d.diagnostico||'', texto_evolucao: text, dados_json: d });
     const si = document.getElementById('saved-indicator');
     si.classList.add('show');
     setTimeout(() => si.classList.remove('show'), 3000);
     toast('✓ Evolução salva no histórico!');
-  } catch(e) {
-    toast('⚠ Não foi possível salvar: ' + e.message, 4000);
-  }
+  } catch(e) { toast('⚠ Não foi possível salvar: ' + e.message, 4000); }
 }
 
-// ── Histórico ─────────────────────────────────────────────────────────────
 async function showHistory() {
   document.getElementById('content').style.display = 'none';
   document.getElementById('result-panel').classList.remove('visible');
   document.getElementById('history-panel').classList.add('visible');
+  document.getElementById('main-scroll').scrollTo({top:0,behavior:'smooth'});
   const list = document.getElementById('history-list');
   list.innerHTML = '<div class="hist-empty">Carregando...</div>';
   try {
     const rows = await sbSelect();
-    if (!rows.length) { list.innerHTML = '<div class="hist-empty">Nenhuma evolução salva ainda.</div>'; return; }
+    if(!rows.length){ list.innerHTML='<div class="hist-empty">Nenhuma evolução salva ainda.</div>'; return; }
     window._histRows = rows;
     list.innerHTML = rows.map(r => {
       const dt = new Date(r.criado_em).toLocaleString('pt-BR');
-      const preview = (r.texto_evolucao||'').substring(0,120) + '...';
+      const preview = (r.texto_evolucao||'').substring(0,120)+'...';
       return `<div class="hist-card" onclick="viewHist('${r.id}')">
         <div class="hist-card-top">
           <span class="hist-card-name">${r.paciente_iniciais||'N/I'}</span>
@@ -742,55 +896,42 @@ async function showHistory() {
         <div class="hist-card-preview">${preview}</div>
       </div>`;
     }).join('');
-  } catch(e) {
-    list.innerHTML = `<div class="hist-empty">Erro: ${e.message}</div>`;
-  }
+  } catch(e) { list.innerHTML=`<div class="hist-empty">Erro: ${e.message}</div>`; }
 }
 
 function viewHist(id) {
-  const r = (window._histRows||[]).find(x => x.id === id);
-  if (!r) return;
+  const r = (window._histRows||[]).find(x => x.id===id);
+  if(!r) return;
   document.getElementById('hv-title').textContent = r.paciente_iniciais||'N/I';
-  document.getElementById('hv-meta').textContent = `${r.diagnostico||''} — ${new Date(r.criado_em).toLocaleString('pt-BR')}`;
+  document.getElementById('hv-meta').textContent = (r.diagnostico||'') + ' — ' + new Date(r.criado_em).toLocaleString('pt-BR');
   document.getElementById('hv-text').textContent = r.texto_evolucao||'';
   document.getElementById('modal-hist-view').classList.add('open');
 }
-
-function copyHistText() {
-  navigator.clipboard.writeText(document.getElementById('hv-text').textContent).then(() => toast('✓ Copiado!'));
-}
-
+function copyHistText() { navigator.clipboard.writeText(document.getElementById('hv-text').textContent).then(() => toast('✓ Copiado!')); }
 async function deleteHist(id, btn) {
-  if (!confirm('Excluir esta evolução?')) return;
+  if(!confirm('Excluir esta evolução?')) return;
   try {
     await sbDelete(id);
     btn.closest('.hist-card').remove();
     toast('Evolução excluída.');
-    if (!document.querySelectorAll('.hist-card').length)
-      document.getElementById('history-list').innerHTML = '<div class="hist-empty">Nenhuma evolução salva.</div>';
-  } catch(e) { toast('Erro: ' + e.message); }
+    if(!document.querySelectorAll('.hist-card').length)
+      document.getElementById('history-list').innerHTML='<div class="hist-empty">Nenhuma evolução salva.</div>';
+  } catch(e) { toast('Erro: '+e.message); }
 }
-
 function backFromHistory() {
   document.getElementById('history-panel').classList.remove('visible');
   document.getElementById('content').style.display = 'block';
+  document.getElementById('main-scroll').scrollTo({top:0,behavior:'smooth'});
 }
-
-// ── Utils ──────────────────────────────────────────────────────────────────
-function copyText() {
-  navigator.clipboard.writeText(document.getElementById('evolution-text').textContent).then(() => toast('✓ Copiado!'));
-}
-function newEvolution() {
-  if (confirm('Iniciar nova evolução? Os dados serão perdidos.')) location.reload();
-}
+function copyText() { navigator.clipboard.writeText(document.getElementById('evolution-text').textContent).then(() => toast('✓ Copiado!')); }
+function newEvolution() { if(confirm('Iniciar nova evolução? Os dados serão perdidos.')) location.reload(); }
 function backToEdit() {
   document.getElementById('result-panel').classList.remove('visible');
   document.getElementById('content').style.display = 'block';
-  goTo(11);
+  document.getElementById('main-scroll').scrollTo({top:0,behavior:'smooth'});
 }
 function closeModal() { document.getElementById('modal-hist-view').classList.remove('open'); }
 document.getElementById('modal-hist-view').addEventListener('click', e => { if(e.target.id==='modal-hist-view') closeModal(); });
 </script>
 </body>
 </html>
-
